@@ -43,9 +43,6 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
 
     const bgVideoSrc = isMobile ? '/theme2-mobile.mp4' : '/theme2-desktop.mp4';
 
-    // Determine when the background video should start loading
-    const shouldLoadBgVideo = introComplete || !isLandingPage;
-
     // Sync timing and handle manual loop fading
     const handleTimeUpdate = () => {
         const video = videoRef.current;
