@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import VideoIntro from './VideoIntro';
 import Chatbot from './Chatbot';
 import { usePathname } from 'next/navigation';
+import { useIsMobile } from '@/lib/useIsMobile';
 
 export const IntroContext = createContext({
     introComplete: false,
@@ -16,11 +17,34 @@ export const useIntro = () => useContext(IntroContext);
 export default function ClientLayout({ children }: { children: React.ReactNode }) {
     const pathname = usePathname();
     const isLandingPage = pathname === '/';
+
     const [introComplete, setIntroComplete] = useState(false);
     const [isLoopFading, setIsLoopFading] = useState(false);
+    const [bgVideoReady, setBgVideoReady] = useState(false);
     const videoRef = useRef<HTMLVideoElement>(null);
     const backgroundPlayedRef = useRef(false);
     const startTimeRef = useRef<number | null>(null);
+    const isMobile = useIsMobile();
+
+    // Skip intro if already shown this session (runs after hydration)
+    useEffect(() => {
+        try {
+            if (sessionStorage.getItem('manthan_intro_seen') === 'true') {
+                setIntroComplete(true);
+            }
+        } catch { }
+    }, []);
+
+    // Persist intro completion to sessionStorage
+    const handleIntroComplete = () => {
+        setIntroComplete(true);
+        try { sessionStorage.setItem('manthan_intro_seen', 'true'); } catch { }
+    };
+
+    const bgVideoSrc = isMobile ? '/theme2-mobile.mp4' : '/theme2-desktop.mp4';
+
+    // Determine when the background video should start loading
+    const shouldLoadBgVideo = introComplete || !isLandingPage;
 
     // Sync timing and handle manual loop fading
     const handleTimeUpdate = () => {
@@ -74,12 +98,22 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
     useEffect(() => {
         if ((introComplete || !isLandingPage) && videoRef.current && !backgroundPlayedRef.current) {
             const video = videoRef.current;
-            video.play().then(() => {
-                if (!startTimeRef.current) startTimeRef.current = Date.now();
-            }).catch(() => { });
+            // Lazy-load: set source only when needed
+            if (!video.src || video.src === '') {
+                video.src = bgVideoSrc;
+                video.load();
+            }
+            const onCanPlay = () => {
+                setBgVideoReady(true);
+                video.play().then(() => {
+                    if (!startTimeRef.current) startTimeRef.current = Date.now();
+                }).catch(() => { });
+                video.removeEventListener('canplay', onCanPlay);
+            };
+            video.addEventListener('canplay', onCanPlay);
             backgroundPlayedRef.current = true;
         }
-    }, [introComplete, isLandingPage]);
+    }, [introComplete, isLandingPage, bgVideoSrc]);
 
     return (
         <IntroContext.Provider value={{ introComplete, setIntroComplete }}>
@@ -89,24 +123,24 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
             {/* Global Intro - Handles both first load and refresh */}
             <AnimatePresence mode="wait">
                 {isLandingPage && !introComplete && (
-                    <VideoIntro key="intro" onComplete={() => setIntroComplete(true)} />
+                    <VideoIntro key="intro" onComplete={handleIntroComplete} />
                 )}
             </AnimatePresence>
 
-            {/* Global Background Video - Manual Looping with Fades */}
+            {/* Global Background Video - Lazy loaded, Manual Looping with Fades */}
             <video
                 ref={videoRef}
                 muted
                 playsInline
                 webkit-playsinline="true"
-                preload="auto"
+                preload="none"
                 loop={false}
                 disablePictureInPicture
                 disableRemotePlayback
                 tabIndex={-1}
                 onTimeUpdate={handleTimeUpdate}
                 onEnded={handleVideoLoop}
-                className={`fixed top-1/2 left-1/2 min-w-[110%] min-h-[110%] w-auto h-auto object-cover transition-all duration-[4500ms] ease-in-out ${(introComplete || !isLandingPage) && !isLoopFading ? 'opacity-45' : 'opacity-0'
+                className={`fixed top-1/2 left-1/2 min-w-[110%] min-h-[110%] w-auto h-auto object-cover transition-all duration-[4500ms] ease-in-out ${(introComplete || !isLandingPage) && !isLoopFading && bgVideoReady ? 'opacity-45' : 'opacity-0'
                     } pointer-events-none bg-black`}
                 style={{
                     height: '110svh',
@@ -115,9 +149,8 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
                     zIndex: -1,
                     transform: 'translate(-50%, -50%) scale(1.4)'
                 }}
-            >
-                <source src="/theme2.mp4" type="video/mp4" />
-            </video>
+            />
+            {/* Source is set dynamically via JS for lazy loading */}
 
             <motion.div
                 initial={false}

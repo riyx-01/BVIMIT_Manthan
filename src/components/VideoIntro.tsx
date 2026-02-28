@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useIsMobile } from '@/lib/useIsMobile';
 
 interface VideoIntroProps {
     onComplete: () => void;
@@ -9,13 +10,31 @@ interface VideoIntroProps {
 
 export default function VideoIntro({ onComplete }: VideoIntroProps) {
     const [isVisible, setIsVisible] = useState(true);
+    const [isBuffering, setIsBuffering] = useState(true);
     const videoRef = useRef<HTMLVideoElement>(null);
+    const isMobile = useIsMobile();
+
+    const videoSrc = isMobile ? '/p2-mobile.mp4' : '/p2-desktop.mp4';
 
     const handleVideoEnd = () => {
         setIsVisible(false);
         // Delay onComplete to allow fade-out animation to finish
         setTimeout(onComplete, 1000);
     };
+
+    // Handle video ready to play
+    useEffect(() => {
+        const video = videoRef.current;
+        if (!video) return;
+
+        const onCanPlay = () => {
+            setIsBuffering(false);
+            video.play().catch(() => { });
+        };
+
+        video.addEventListener('canplay', onCanPlay);
+        return () => video.removeEventListener('canplay', onCanPlay);
+    }, []);
 
     // Fallback timer in case video fails to load or play
     useEffect(() => {
@@ -39,12 +58,20 @@ export default function VideoIntro({ onComplete }: VideoIntroProps) {
                     className="fixed inset-0 z-[9999] bg-black flex items-center justify-center overflow-hidden"
                     style={{ height: '100svh' }}
                 >
+                    {/* Loading spinner while video buffers */}
+                    {isBuffering && (
+                        <div className="absolute inset-0 z-[10001] flex items-center justify-center bg-black">
+                            <div className="w-10 h-10 border-2 border-white/20 border-t-white/80 rounded-full animate-spin" />
+                        </div>
+                    )}
+
                     <video
                         ref={videoRef}
                         autoPlay
                         muted
                         playsInline
-                        // poster="/bg-zodiac.jpg"
+                        preload="auto"
+                        poster="/bg-zodiac.jpg"
                         onEnded={handleVideoEnd}
                         className="absolute top-1/2 left-1/2 min-w-[110%] min-h-[110%] w-auto h-auto object-cover"
                         style={{
@@ -54,7 +81,7 @@ export default function VideoIntro({ onComplete }: VideoIntroProps) {
                             transform: 'translate(-50%, -50%) scale(1.4)'
                         }}
                     >
-                        <source src="/p2.mp4" type="video/mp4" />
+                        <source src={videoSrc} type="video/mp4" />
                     </video>
 
                     {/* Skip Button - Adjusted for mobile */}
