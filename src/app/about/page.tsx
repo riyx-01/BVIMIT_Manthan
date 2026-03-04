@@ -17,7 +17,7 @@ export default function AboutPage() {
                         <motion.span
                             initial={{ opacity: 0, y: 10 }}
                             animate={{ opacity: 1, y: 0 }}
-                            className="text-manthan-gold text-xs font-bold uppercase tracking-[0.4em] mb-4 block"
+                            className="text-manthan-gold font-tagline text-xl uppercase tracking-[0.4em] mb-4 block"
                         >
                             Roots to Realms
                         </motion.span>

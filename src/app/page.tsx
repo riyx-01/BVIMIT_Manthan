@@ -58,7 +58,7 @@ export default function HomePage() {
                             initial={{ scale: 0.9, opacity: 0 }}
                             animate={{ scale: 1, opacity: 1 }}
                             transition={{ duration: 1.2 }}
-                            className="mb-8"
+                            className="mb-2"
                         >
                             <Image
                                 src="/manthan_final_logo.png"
@@ -70,7 +70,7 @@ export default function HomePage() {
                             />
                         </motion.div>
 
-                        <h2 className="font-ancient text-4xl md:text-6xl text-gold-gradient tracking-widest uppercase mb-12">
+                        <h2 className="font-tagline text-4xl md:text-6xl text-gold-gradient tracking-widest uppercase mb-12">
                             Roots to Realms
                         </h2>
 

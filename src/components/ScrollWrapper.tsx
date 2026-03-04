@@ -31,7 +31,7 @@ export default function ScrollWrapper({ children, className = '', padding = 'p-8
                     open: { height: 'auto', opacity: 1 }
                 }}
                 transition={{ duration: 1, ease: "easeOut" }}
-                className={`parchment-body ${padding} overflow-hidden`}
+                className={`parchment-body ${padding}`}
             >
                 {children}
             </motion.div>
