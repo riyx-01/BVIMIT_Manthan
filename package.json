@@ -21,6 +21,7 @@
         "razorpay": "^2.9.0",
         "react": "^18.3.0",
         "react-dom": "^18.3.0",
+        "swiper": "^12.1.2",
         "zod": "^3.23.0"
     },
     "devDependencies": {
@@ -34,5 +35,9 @@
         "postcss": "^8.4.0",
         "tailwindcss": "^3.4.0",
         "typescript": "^5.5.0"
-    }
+    },
+    "description": "Manthan is a full-stack Next.js platform for event discovery, registration, payment, admin operations, and entry-pass validation for a college tech fest.",
+    "main": "next.config.js",
+    "author": "",
+    "license": "ISC"
 }

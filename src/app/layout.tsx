@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import ClientLayout from '@/components/ClientLayout';
+import ScrollFilters from '@/components/ScrollFilters';
 
 export const metadata: Metadata = {
     title: 'Manthan 2026 | Tech Fest',
@@ -20,6 +21,7 @@ export default function RootLayout({
                 <link rel="icon" href="/favicon.ico" />
             </head>
             <body className="min-h-screen text-gray-200 antialiased overflow-x-hidden">
+                <ScrollFilters />
                 <ClientLayout>
                     {children}
                 </ClientLayout>

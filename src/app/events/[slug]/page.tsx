@@ -2,6 +2,7 @@ import { Event } from '@/lib/types';
 import { formatFee, formatDateTime, categoryColors, categoryIcons } from '@/lib/constants';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import ScrollWrapper from '@/components/ScrollWrapper';
 import Link from 'next/link';
 import { Calendar, MapPin, Users, ArrowLeft, IndianRupee } from 'lucide-react';
 import { notFound } from 'next/navigation';
@@ -67,51 +68,51 @@ export default async function EventDetailPage({
                         Back to Events
                     </Link>
 
-                    {/* Event Card */}
-                    <div className="glass-card p-8 md:p-12">
+                    {/* Event Scroll Container */}
+                    <ScrollWrapper padding="p-8 md:p-12">
                         {/* Category Badge */}
                         <span className={`inline-block px-4 py-1.5 text-sm font-medium rounded-full mb-6 ${colors.badge}`}>
                             {categoryIcons[event.category]} {event.category.charAt(0).toUpperCase() + event.category.slice(1)}
                         </span>
 
                         {/* Title */}
-                        <h1 className="font-heading text-4xl sm:text-5xl font-bold text-gold-gradient mb-4">
+                        <h1 className="font-ancient text-4xl sm:text-5xl font-bold text-[#3d2b1f] mb-4">
                             {event.name}
                         </h1>
 
                         {/* Description */}
-                        <p className="text-gray-300 text-lg leading-relaxed mb-8">{event.description}</p>
+                        <p className="text-[#5c4033] text-lg leading-relaxed mb-8">{event.description}</p>
 
                         {/* Details Grid */}
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
-                            <div className="flex items-center space-x-3 p-4 rounded-lg bg-manthan-black/50 border border-manthan-gold/10">
-                                <Calendar size={20} className="text-manthan-gold" />
+                            <div className="flex items-center space-x-3 p-4 rounded-lg bg-[#3d2b1f]/5 border border-[#3d2b1f]/10">
+                                <Calendar size={20} className="text-manthan-maroon" />
                                 <div>
-                                    <p className="text-xs text-gray-500">Date & Time</p>
-                                    <p className="text-gray-200 text-sm">{formatDateTime(event.event_date)}</p>
+                                    <p className="text-xs text-[#8b4513]">Date & Time</p>
+                                    <p className="text-[#3d2b1f] text-sm font-semibold">{formatDateTime(event.event_date)}</p>
                                 </div>
                             </div>
-                            <div className="flex items-center space-x-3 p-4 rounded-lg bg-manthan-black/50 border border-manthan-gold/10">
-                                <MapPin size={20} className="text-manthan-gold" />
+                            <div className="flex items-center space-x-3 p-4 rounded-lg bg-[#3d2b1f]/5 border border-[#3d2b1f]/10">
+                                <MapPin size={20} className="text-manthan-maroon" />
                                 <div>
-                                    <p className="text-xs text-gray-500">Venue</p>
-                                    <p className="text-gray-200 text-sm">{event.venue}</p>
+                                    <p className="text-xs text-[#8b4513]">Venue</p>
+                                    <p className="text-[#3d2b1f] text-sm font-semibold">{event.venue}</p>
                                 </div>
                             </div>
-                            <div className="flex items-center space-x-3 p-4 rounded-lg bg-manthan-black/50 border border-manthan-gold/10">
-                                <Users size={20} className="text-manthan-gold" />
+                            <div className="flex items-center space-x-3 p-4 rounded-lg bg-[#3d2b1f]/5 border border-[#3d2b1f]/10">
+                                <Users size={20} className="text-manthan-maroon" />
                                 <div>
-                                    <p className="text-xs text-gray-500">Team Size</p>
-                                    <p className="text-gray-200 text-sm">{teamInfo}</p>
+                                    <p className="text-xs text-[#8b4513]">Team Size</p>
+                                    <p className="text-[#3d2b1f] text-sm font-semibold">{teamInfo}</p>
                                 </div>
                             </div>
-                            <div className="flex items-center space-x-3 p-4 rounded-lg bg-manthan-black/50 border border-manthan-gold/10">
-                                <IndianRupee size={20} className="text-manthan-gold" />
+                            <div className="flex items-center space-x-3 p-4 rounded-lg bg-[#3d2b1f]/5 border border-[#3d2b1f]/10">
+                                <IndianRupee size={20} className="text-manthan-maroon" />
                                 <div>
-                                    <p className="text-xs text-gray-500">Registration Fee</p>
-                                    <p className="text-gray-200 text-sm font-bold">{formatFee(event.fee)}</p>
+                                    <p className="text-xs text-[#8b4513]">Registration Fee</p>
+                                    <p className="text-[#3d2b1f] text-sm font-bold">{formatFee(event.fee)}</p>
                                     {event.fee_calculation && (
-                                        <p className="text-gray-500 text-xs">
+                                        <p className="text-[#8b4513] text-xs">
                                             {event.fee_calculation === 'per_participant' ? 'Per participant' : 'Per team'}
                                         </p>
                                     )}
@@ -120,31 +121,31 @@ export default async function EventDetailPage({
                         </div>
 
                         {(event.prize_text || event.prize_winner || event.prize_runner_up || event.prize_second_runner_up || event.registration_deadline) && (
-                            <div className="mb-8 rounded-lg border border-manthan-gold/10 bg-manthan-black/40 p-5">
-                                <h2 className="font-heading text-xl font-bold text-manthan-gold mb-3">Prizes & Deadlines</h2>
-                                {event.prize_text && <p className="text-gray-300 text-sm mb-3">{event.prize_text}</p>}
+                            <div className="mb-8 rounded-lg border border-[#3d2b1f]/10 bg-[#3d2b1f]/5 p-5">
+                                <h2 className="font-ancient text-xl font-bold text-manthan-maroon mb-3">Prizes & Deadlines</h2>
+                                {event.prize_text && <p className="text-[#5c4033] text-sm mb-3">{event.prize_text}</p>}
                                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-sm mb-3">
                                     {event.prize_winner && (
                                         <div>
-                                            <p className="text-gray-500 text-xs">Winner</p>
-                                            <p className="text-manthan-gold font-semibold">{formatFee(event.prize_winner)}</p>
+                                            <p className="text-[#8b4513] text-xs">Winner</p>
+                                            <p className="text-manthan-maroon font-bold">{formatFee(event.prize_winner)}</p>
                                         </div>
                                     )}
                                     {event.prize_runner_up && (
                                         <div>
-                                            <p className="text-gray-500 text-xs">Runner-up</p>
-                                            <p className="text-manthan-gold font-semibold">{formatFee(event.prize_runner_up)}</p>
+                                            <p className="text-[#8b4513] text-xs">Runner-up</p>
+                                            <p className="text-manthan-maroon font-bold">{formatFee(event.prize_runner_up)}</p>
                                         </div>
                                     )}
                                     {event.prize_second_runner_up && (
                                         <div>
-                                            <p className="text-gray-500 text-xs">Second Runner-up</p>
-                                            <p className="text-manthan-gold font-semibold">{formatFee(event.prize_second_runner_up)}</p>
+                                            <p className="text-[#8b4513] text-xs">Second Runner-up</p>
+                                            <p className="text-manthan-maroon font-bold">{formatFee(event.prize_second_runner_up)}</p>
                                         </div>
                                     )}
                                 </div>
                                 {event.registration_deadline && (
-                                    <p className="text-gray-400 text-xs">
+                                    <p className="text-[#8b4513] text-xs font-medium">
                                         Registration closes: {formatDateTime(event.registration_deadline)}
                                     </p>
                                 )}
@@ -154,14 +155,14 @@ export default async function EventDetailPage({
                         {/* Spots Left */}
                         <div className="mb-8">
                             <div className="flex items-center justify-between mb-2">
-                                <span className="text-sm text-gray-400">Spots Remaining</span>
-                                <span className={`text-sm font-bold ${spotsLeft < 20 ? 'text-manthan-crimson' : 'text-manthan-gold'}`}>
+                                <span className="text-sm text-[#8b4513]">Spots Remaining</span>
+                                <span className={`text-sm font-bold ${spotsLeft < 20 ? 'text-manthan-crimson' : 'text-manthan-maroon'}`}>
                                     {spotsLeft} / {event.max_participants}
                                 </span>
                             </div>
-                            <div className="w-full h-2 bg-manthan-black/50 rounded-full overflow-hidden">
+                            <div className="w-full h-2 bg-[#3d2b1f]/10 rounded-full overflow-hidden">
                                 <div
-                                    className="h-full bg-gradient-to-r from-manthan-gold to-manthan-crimson rounded-full transition-all"
+                                    className="h-full bg-gradient-to-r from-manthan-maroon to-manthan-crimson rounded-full transition-all"
                                     style={{ width: `${(event.current_participants / event.max_participants) * 100}%` }}
                                 />
                             </div>
@@ -169,12 +170,12 @@ export default async function EventDetailPage({
 
                         {/* Rules */}
                         {event.rules && event.rules.length > 0 && (
-                            <div className="mb-8">
-                                <h2 className="font-heading text-xl font-bold text-manthan-gold mb-4">Rules & Guidelines</h2>
+                            <div className="mb-0">
+                                <h2 className="font-ancient text-xl font-bold text-manthan-maroon mb-4">Rules & Guidelines</h2>
                                 <ul className="space-y-2">
                                     {event.rules.map((rule, index) => (
-                                        <li key={index} className="flex items-start text-gray-300 text-sm">
-                                            <span className="w-1.5 h-1.5 rounded-full bg-manthan-gold/50 mr-3 mt-2 flex-shrink-0" />
+                                        <li key={index} className="flex items-start text-[#5c4033] text-sm">
+                                            <span className="w-1.5 h-1.5 rounded-full bg-manthan-maroon/50 mr-3 mt-2 flex-shrink-0" />
                                             {rule}
                                         </li>
                                     ))}
@@ -199,7 +200,7 @@ export default async function EventDetailPage({
                                 Browse All Events
                             </Link>
                         </div>
-                    </div>
+                    </ScrollWrapper>
                 </div>
             </main>
             <Footer />

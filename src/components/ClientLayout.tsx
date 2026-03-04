@@ -25,23 +25,30 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
     const backgroundPlayedRef = useRef(false);
     const startTimeRef = useRef<number | null>(null);
 
-    const bgVideoSrc = 'https://k6iphva0ugo1rocg.public.blob.vercel-storage.com/manthan/videos/theme3_hq.mp4';
+    const bgVideoSrc = '/bg_best_vid.mp4';
 
     // Sync timing and handle manual loop fading
     const handleTimeUpdate = () => {
         const video = videoRef.current;
-        if (video && video.duration) {
-            const fadeDuration = 4.5;
-            // Fade out starts 4.5s before end
-            if (video.currentTime > video.duration - fadeDuration) {
+        if (video) {
+            const loopPoint = 5.0; // User requested 5s duration
+            const fadePoint = 1.0; // 1s fade in/out
+
+            // Fade out starts at loopPoint - fadePoint
+            if (video.currentTime >= loopPoint - fadePoint && video.currentTime < loopPoint) {
                 if (!isLoopFading) setIsLoopFading(true);
             }
-            // Fade in starts immediately after reset
-            else if (video.currentTime < 4.5 && isLoopFading) {
-                // Wait for a tiny buffer to ensure the reset happened, then start fade-in
-                if (video.currentTime > 0.1) setIsLoopFading(false);
-            } else {
-                if (isLoopFading && video.currentTime > 4.5) setIsLoopFading(false);
+
+            // Force reset if it exceeds 5s
+            if (video.currentTime >= loopPoint) {
+                video.currentTime = 0;
+                video.play().catch(() => { });
+                setIsLoopFading(false);
+            }
+
+            // Normal operation outside fade zone
+            if (video.currentTime < loopPoint - fadePoint && video.currentTime > fadePoint) {
+                if (isLoopFading) setIsLoopFading(false);
             }
         }
     };
@@ -51,6 +58,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
             const video = videoRef.current;
             video.currentTime = 0;
             video.play().catch(() => { });
+            setIsLoopFading(false);
         }
     };
 
@@ -59,15 +67,12 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
         const syncVideo = () => {
             if (document.visibilityState === 'visible' && startTimeRef.current && videoRef.current) {
                 const video = videoRef.current;
-                if (video.duration) {
-                    const totalElapsed = (Date.now() - startTimeRef.current) / 1000;
-                    // For looping, we use the remainder (modulo) of the duration
-                    const seekTime = totalElapsed % video.duration;
+                const totalElapsed = (Date.now() - startTimeRef.current) / 1000;
+                const seekTime = totalElapsed % 5.0; // Loop every 5s
 
-                    if (Math.abs(video.currentTime - seekTime) > 0.5) {
-                        video.currentTime = seekTime;
-                        video.play().catch(() => { });
-                    }
+                if (Math.abs(video.currentTime - seekTime) > 0.5) {
+                    video.currentTime = seekTime;
+                    video.play().catch(() => { });
                 }
             }
         };
@@ -121,7 +126,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
                 tabIndex={-1}
                 onTimeUpdate={handleTimeUpdate}
                 onEnded={handleVideoLoop}
-                className={`fixed top-1/2 left-1/2 min-w-[110%] min-h-[110%] w-auto h-auto object-cover transition-all duration-[4500ms] ease-in-out ${(introComplete || !isLandingPage) && !isLoopFading && bgVideoReady ? 'opacity-45' : 'opacity-0'
+                className={`fixed top-1/2 left-1/2 min-w-[110%] min-h-[110%] w-auto h-auto object-cover transition-all duration-[1000ms] ease-in-out ${(introComplete || !isLandingPage) && !isLoopFading && bgVideoReady ? 'opacity-40' : 'opacity-0'
                     } pointer-events-none bg-black`}
                 style={{
                     height: '110svh',
@@ -131,6 +136,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
                     transform: 'translate(-50%, -50%) scale(1.4)'
                 }}
             />
+
             {/* Source is set dynamically via JS for lazy loading */}
 
             <motion.div
@@ -139,6 +145,14 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
                 transition={{ duration: 1.5, ease: "easeOut" }}
                 className={(isLandingPage && !introComplete) ? "fixed inset-0 pointer-events-none overflow-hidden bg-transparent" : "relative min-h-screen bg-transparent"}
             >
+                {/* Home Page Specific Background Override */}
+                {isLandingPage && (
+                    <style jsx global>{`
+                        body::before {
+                            display: none !important;
+                        }
+                    `}</style>
+                )}
                 {children}
 
                 {/* Chatbot - Only show after intro or on subpages */}
