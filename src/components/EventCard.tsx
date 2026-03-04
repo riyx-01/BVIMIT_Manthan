@@ -84,25 +84,25 @@ export default function EventCard({ event, selected, onToggle, selectable }: Eve
                 </div>
 
                 {/* Title */}
-                <h3 className="font-ancient text-xl font-bold text-[#3d2b1f] mb-2 group-hover:text-manthan-maroon transition-colors">
+                <h3 className="font-ancient text-2xl font-bold text-[#3d2b1f] mb-2 group-hover:text-manthan-maroon transition-colors">
                     {event.name}
                 </h3>
 
                 {/* Description */}
-                <p className="text-[#5c4033] text-sm mb-4 line-clamp-2">{event.description}</p>
+                <p className="text-[#5c4033] text-base mb-4 line-clamp-2">{event.description}</p>
 
                 {/* Meta */}
                 <div className="space-y-2 mb-4">
-                    <div className="flex items-center text-[#5c4033] text-xs">
-                        <Calendar size={14} className="mr-2 text-manthan-maroon/50" />
+                    <div className="flex items-center text-[#5c4033] text-sm">
+                        <Calendar size={16} className="mr-2 text-manthan-maroon/50" />
                         {formatDate(event.event_date)}
                     </div>
-                    <div className="flex items-center text-[#5c4033] text-xs">
-                        <MapPin size={14} className="mr-2 text-manthan-maroon/50" />
+                    <div className="flex items-center text-[#5c4033] text-sm">
+                        <MapPin size={16} className="mr-2 text-manthan-maroon/50" />
                         {event.venue}
                     </div>
-                    <div className="flex items-center text-[#5c4033] text-xs">
-                        <Users size={14} className="mr-2 text-manthan-maroon/50" />
+                    <div className="flex items-center text-[#5c4033] text-sm">
+                        <Users size={16} className="mr-2 text-manthan-maroon/50" />
                         {teamLabel}
                     </div>
                 </div>

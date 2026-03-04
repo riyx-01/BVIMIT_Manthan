@@ -4,11 +4,14 @@ import { useState } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import ScrollWrapper from '@/components/ScrollWrapper';
-import { Mail, Phone, MapPin, Send, MessageSquare } from 'lucide-react';
+import { Mail, Phone, MapPin, Send, Sparkles } from 'lucide-react';
+import AnimatedButton from '@/components/AnimatedButton';
+import { motion, AnimatePresence } from 'framer-motion';
 
 export default function ContactPage() {
     const [form, setForm] = useState({ name: '', email: '', subject: '', message: '' });
     const [submitted, setSubmitted] = useState(false);
+    const [focusedField, setFocusedField] = useState<string | null>(null);
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
@@ -17,167 +20,233 @@ export default function ContactPage() {
     };
 
     return (
-        <>
+        <div className="min-h-screen bg-transparent flex flex-col relative overflow-hidden">
             <Navbar />
-            <main className="pt-24 pb-16 px-4 min-h-screen relative overflow-hidden">
-                {/* Background Glow */}
-                <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-manthan-maroon/10 rounded-full blur-[120px] pointer-events-none" />
 
-                <div className="max-w-6xl mx-auto relative z-10">
-                    {/* Header */}
-                    <div className="text-center mb-12">
-                        <h1 className="font-heading text-4xl sm:text-5xl font-bold text-gold-gradient mb-4">
-                            Contact Us
-                        </h1>
-                        <p className="text-gray-400 max-w-2xl mx-auto">
-                            Have questions about Manthan 2026? Reach out to us and we&apos;ll get back to you.
-                        </p>
+            {/* Background Video (Optimized) */}
+            <div className="fixed inset-0 -z-10 w-full h-full">
+                <video
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
+                    className="w-full h-full object-cover opacity-20"
+                    onLoadedData={(e) => {
+                        e.currentTarget.playbackRate = 0.5;
+                    }}
+                >
+                    <source src="https://k6iphva0ugo1rocg.public.blob.vercel-storage.com/extended%20.mp4" type="video/mp4" />
+                </video>
+                <div className="absolute inset-0 bg-black/60" />
+            </div>
+
+            <main className="flex-1 pt-32 pb-20 px-6 relative z-10">
+                <div className="max-w-5xl mx-auto">
+                    <div className="text-center mb-16">
+                        <motion.h1
+                            initial={{ y: 20, opacity: 0 }}
+                            animate={{ y: 0, opacity: 1 }}
+                            className="font-ancient text-5xl md:text-7xl text-gold-gradient uppercase mb-4"
+                        >
+                            Council Reach
+                        </motion.h1>
+                        <motion.p
+                            initial={{ y: 20, opacity: 0 }}
+                            animate={{ y: 0, opacity: 1 }}
+                            transition={{ delay: 0.1 }}
+                            className="font-serif italic text-manthan-gold/60 text-xl"
+                        >
+                            Send your scrolls to the high council
+                        </motion.p>
                     </div>
 
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
                         {/* Contact Info */}
-                        <div className="space-y-6">
-                            <ScrollWrapper padding="p-8">
-                                <h2 className="font-ancient text-2xl font-bold text-[#3d2b1f] mb-6 uppercase tracking-wider">
-                                    Get in Touch
-                                </h2>
+                        <motion.div
+                            initial={{ x: -30, opacity: 0 }}
+                            animate={{ x: 0, opacity: 1 }}
+                            transition={{ delay: 0.2 }}
+                            className="space-y-8"
+                        >
+                            <ScrollWrapper padding="p-8 md:p-10" className="h-full">
+                                <h2 className="font-ancient text-3xl text-[#3d2b1f] mb-8 uppercase tracking-widest">The Oracle's Reach</h2>
                                 <div className="space-y-6">
-                                    <div className="flex items-start space-x-4">
-                                        <div className="w-10 h-10 rounded-lg bg-manthan-maroon/10 flex items-center justify-center flex-shrink-0">
-                                            <Mail size={20} className="text-manthan-maroon" />
-                                        </div>
-                                        <div>
-                                            <h3 className="font-ancient text-[#3d2b1f] font-medium uppercase text-sm">Email</h3>
-                                            <p className="text-[#5c4033] text-sm">manthan@bvimit.co.in</p>
-                                            <p className="text-[#5c4033] text-sm italic">support@manthan2026.in</p>
-                                        </div>
-                                    </div>
-                                    <div className="flex items-start space-x-4">
-                                        <div className="w-10 h-10 rounded-lg bg-manthan-maroon/10 flex items-center justify-center flex-shrink-0">
-                                            <Phone size={20} className="text-manthan-maroon" />
-                                        </div>
-                                        <div>
-                                            <h3 className="font-ancient text-[#3d2b1f] font-medium uppercase text-sm">Phone</h3>
-                                            <p className="text-[#5c4033] text-sm font-semibold">+91 123 456 7890</p>
-                                        </div>
-                                    </div>
-                                    <div className="flex items-start space-x-4">
-                                        <div className="w-10 h-10 rounded-lg bg-manthan-maroon/10 flex items-center justify-center flex-shrink-0">
-                                            <MapPin size={20} className="text-manthan-maroon" />
-                                        </div>
-                                        <div>
-                                            <h3 className="font-ancient text-[#3d2b1f] font-medium uppercase text-sm">Address</h3>
-                                            <p className="text-[#5c4033] text-sm italic">
-                                                BVIMIT, Sector-8, Belapur,<br />
-                                                CBD, Navi Mumbai - 400614
-                                            </p>
-                                        </div>
-                                    </div>
+                                    <ContactItem
+                                        icon={<Mail size={24} />}
+                                        label="Electronic Scroll"
+                                        value="principal.bvimit@bharatividyapeeth.edu"
+                                        link="mailto:principal.bvimit@bharatividyapeeth.edu"
+                                    />
+                                    <ContactItem
+                                        icon={<Phone size={24} />}
+                                        label="Signal Transmission"
+                                        value="+91 8657008016"
+                                        link="tel:+918657008016"
+                                    />
+                                    <ContactItem
+                                        icon={<MapPin size={24} />}
+                                        label="The Great Hall"
+                                        value="BVIMIT, Sector-8, Belapur, CBD, Navi Mumbai - 400614"
+                                        link="https://maps.google.com"
+                                    />
                                 </div>
-                            </ScrollWrapper>
-
-                            {/* Coordinators */}
-                            <ScrollWrapper padding="p-8">
-                                <h2 className="font-ancient text-xl font-bold text-[#3d2b1f] mb-4 uppercase tracking-wider">
-                                    Scribes of the Realm
-                                </h2>
-                                <div className="space-y-3">
-                                    {[
-                                        { name: 'Uday Bhoi', role: 'General Secretary', phone: '+91 123 456 7890' },
-                                        { name: 'Ameya Bagwe', role: 'Technical Head', phone: '+91 123 456 7891' },
-                                        { name: 'Sameer Sawant', role: 'Cultural Head', phone: '+91 123 456 7892' },
-                                    ].map((coord) => (
-                                        <div key={coord.name} className="flex items-center justify-between p-3 border-b border-[#3d2b1f]/10">
-                                            <div>
-                                                <p className="text-[#3d2b1f] text-sm font-bold uppercase">{coord.name}</p>
-                                                <p className="text-[#5c4033] text-xs font-serif italic">{coord.role}</p>
-                                            </div>
-                                            <a href={`tel:${coord.phone}`} className="text-manthan-maroon hover:text-manthan-crimson text-sm font-bold">
-                                                {coord.phone}
-                                            </a>
-                                        </div>
-                                    ))}
-                                </div>
-                            </ScrollWrapper>
-                        </div>
-
-                        {/* Contact Form */}
-                        <ScrollWrapper padding="p-8">
-                            {submitted ? (
-                                <div className="text-center py-12">
-                                    <MessageSquare size={48} className="mx-auto text-manthan-maroon mb-4" />
-                                    <h3 className="font-ancient text-2xl font-bold text-[#3d2b1f] mb-2 uppercase">
-                                        Inscribed!
-                                    </h3>
-                                    <p className="text-[#5c4033] italic">
-                                        Your message has been received by the scribes. We&apos;ll get back to you soon.
+                                <div className="mt-12 p-6 border-2 border-[#3d2b1f]/10 rounded-xl bg-[#3d2b1f]/5">
+                                    <p className="font-serif italic text-[#5c4033] text-sm leading-relaxed">
+                                        Our messengers are active during the peak of the sun (10:00 AM - 5:00 PM).
+                                        Urgent decrees will be handled by the high priority couriers.
                                     </p>
                                 </div>
-                            ) : (
-                                <>
-                                    <h2 className="font-ancient text-2xl font-bold text-[#3d2b1f] mb-6 uppercase tracking-wider">
-                                        Send a Message
-                                    </h2>
-                                    <form onSubmit={handleSubmit} className="space-y-5">
-                                        <div>
-                                            <label className="block text-sm text-[#3d2b1f] font-bold uppercase mb-1.5 ml-1">Your Name</label>
-                                            <input
-                                                type="text"
-                                                required
-                                                value={form.name}
-                                                onChange={(e) => setForm({ ...form, name: e.target.value })}
-                                                className="parchment-input w-full px-4 py-3 text-[#3d2b1f] text-sm placeholder-[#5c4033]/40"
-                                                placeholder="Enter your name"
-                                            />
-                                        </div>
-                                        <div>
-                                            <label className="block text-sm text-[#3d2b1f] font-bold uppercase mb-1.5 ml-1">Email</label>
-                                            <input
-                                                type="email"
-                                                required
-                                                value={form.email}
-                                                onChange={(e) => setForm({ ...form, email: e.target.value })}
-                                                className="parchment-input w-full px-4 py-3 text-[#3d2b1f] text-sm placeholder-[#5c4033]/40"
-                                                placeholder="your@email.com"
-                                            />
-                                        </div>
-                                        <div>
-                                            <label className="block text-sm text-[#3d2b1f] font-bold uppercase mb-1.5 ml-1">Subject</label>
-                                            <input
-                                                type="text"
-                                                required
-                                                value={form.subject}
-                                                onChange={(e) => setForm({ ...form, subject: e.target.value })}
-                                                className="parchment-input w-full px-4 py-3 text-[#3d2b1f] text-sm placeholder-[#5c4033]/40"
-                                                placeholder="Subject"
-                                            />
-                                        </div>
-                                        <div>
-                                            <label className="block text-sm text-[#3d2b1f] font-bold uppercase mb-1.5 ml-1">Message</label>
-                                            <textarea
-                                                required
-                                                rows={5}
-                                                value={form.message}
-                                                onChange={(e) => setForm({ ...form, message: e.target.value })}
-                                                className="parchment-input w-full px-4 py-3 text-[#3d2b1f] text-sm placeholder-[#5c4033]/40 resize-none h-32"
-                                                placeholder="Your message..."
-                                            />
-                                        </div>
-                                        <button
-                                            type="submit"
-                                            className="w-full py-4 bg-gradient-to-r from-manthan-maroon to-manthan-crimson text-white font-ancient font-bold uppercase tracking-[0.2em] shadow-xl shadow-manthan-maroon/20 hover:scale-[1.02] transition-transform flex items-center justify-center gap-2 mt-4"
+                            </ScrollWrapper>
+                        </motion.div>
+
+                        {/* Contact Form */}
+                        <motion.div
+                            initial={{ x: 30, opacity: 0 }}
+                            animate={{ x: 0, opacity: 1 }}
+                            transition={{ delay: 0.3 }}
+                        >
+                            <ScrollWrapper padding="p-8 md:p-10">
+                                <AnimatePresence mode="wait">
+                                    {!submitted ? (
+                                        <motion.form
+                                            key="form"
+                                            onSubmit={handleSubmit}
+                                            className="space-y-6"
+                                            initial={{ opacity: 1 }}
+                                            exit={{ opacity: 0, scale: 0.95 }}
                                         >
-                                            <Send size={18} />
-                                            Dispatch Message
-                                        </button>
-                                    </form>
-                                </>
-                            )}
-                        </ScrollWrapper>
+                                            <h2 className="font-ancient text-3xl text-[#3d2b1f] mb-8 uppercase tracking-widest">Scribe Your Message</h2>
+
+                                            <div className="space-y-5">
+                                                <ContactField
+                                                    label="Your Name"
+                                                    focused={focusedField === 'name'}
+                                                >
+                                                    <input
+                                                        type="text"
+                                                        required
+                                                        value={form.name}
+                                                        onChange={(e) => setForm({ ...form, name: e.target.value })}
+                                                        onFocus={() => setFocusedField('name')}
+                                                        onBlur={() => setFocusedField(null)}
+                                                        placeholder="Legendary identity"
+                                                        className="w-full bg-transparent px-2 py-3 text-sm text-[#3d2b1f] placeholder-[#3d2b1f]/40 focus:outline-none font-medium"
+                                                    />
+                                                </ContactField>
+
+                                                <ContactField
+                                                    label="Email Realm"
+                                                    focused={focusedField === 'email'}
+                                                >
+                                                    <input
+                                                        type="email"
+                                                        required
+                                                        value={form.email}
+                                                        onChange={(e) => setForm({ ...form, email: e.target.value })}
+                                                        onFocus={() => setFocusedField('email')}
+                                                        onBlur={() => setFocusedField(null)}
+                                                        placeholder="your@realm.com"
+                                                        className="w-full bg-transparent px-2 py-3 text-sm text-[#3d2b1f] placeholder-[#3d2b1f]/40 focus:outline-none font-medium"
+                                                    />
+                                                </ContactField>
+
+                                                <ContactField
+                                                    label="Subject of Decree"
+                                                    focused={focusedField === 'subject'}
+                                                >
+                                                    <input
+                                                        type="text"
+                                                        required
+                                                        value={form.subject}
+                                                        onChange={(e) => setForm({ ...form, subject: e.target.value })}
+                                                        onFocus={() => setFocusedField('subject')}
+                                                        onBlur={() => setFocusedField(null)}
+                                                        placeholder="Matter of importance"
+                                                        className="w-full bg-transparent px-2 py-3 text-sm text-[#3d2b1f] placeholder-[#3d2b1f]/40 focus:outline-none font-medium"
+                                                    />
+                                                </ContactField>
+
+                                                <ContactField
+                                                    label="The Scroll Content"
+                                                    focused={focusedField === 'message'}
+                                                >
+                                                    <textarea
+                                                        required
+                                                        rows={4}
+                                                        value={form.message}
+                                                        onChange={(e) => setForm({ ...form, message: e.target.value })}
+                                                        onFocus={() => setFocusedField('message')}
+                                                        onBlur={() => setFocusedField(null)}
+                                                        placeholder="Unfold your thoughts here..."
+                                                        className="w-full bg-transparent px-2 py-3 text-sm text-[#3d2b1f] placeholder-[#3d2b1f]/40 focus:outline-none font-medium resize-none"
+                                                    />
+                                                </ContactField>
+                                            </div>
+
+                                            <div className="flex justify-end pt-4">
+                                                <AnimatedButton type="submit" icon={Send}>
+                                                    Dispatch Scroll
+                                                </AnimatedButton>
+                                            </div>
+                                        </motion.form>
+                                    ) : (
+                                        <motion.div
+                                            key="thanks"
+                                            initial={{ opacity: 0, scale: 0.95 }}
+                                            animate={{ opacity: 1, scale: 1 }}
+                                            className="text-center py-20 px-4"
+                                        >
+                                            <div className="w-20 h-20 bg-manthan-maroon/10 rounded-full flex items-center justify-center mx-auto mb-8 border-2 border-manthan-maroon/20">
+                                                <Sparkles className="text-manthan-maroon" size={40} />
+                                            </div>
+                                            <h3 className="font-ancient text-4xl text-[#3d2b1f] mb-4 uppercase">Scroll Received</h3>
+                                            <p className="font-serif italic text-[#5c4033] text-lg max-w-sm mx-auto">
+                                                Your message has been safely delivered to our archives. We shall reply as soon as the moon aligns.
+                                            </p>
+                                            <button
+                                                onClick={() => setSubmitted(false)}
+                                                className="mt-10 text-manthan-maroon text-xs font-bold uppercase tracking-[0.3em] hover:underline"
+                                            >
+                                                Send another decree
+                                            </button>
+                                        </motion.div>
+                                    )}
+                                </AnimatePresence>
+                            </ScrollWrapper>
+                        </motion.div>
                     </div>
                 </div>
             </main>
+
             <Footer />
-        </>
+        </div>
+    );
+}
+
+function ContactItem({ icon, label, value, link }: { icon: React.ReactNode, label: string, value: string, link: string }) {
+    return (
+        <a
+            href={link}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-start gap-5 group"
+        >
+            <div className="mt-1 p-3 rounded-lg bg-manthan-maroon/5 text-manthan-maroon group-hover:bg-manthan-maroon group-hover:text-white transition-all duration-300">
+                {icon}
+            </div>
+            <div>
+                <p className="text-[10px] uppercase tracking-[0.2em] text-[#3d2b1f]/40 font-black mb-1">{label}</p>
+                <p className="text-[#3d2b1f] font-bold text-sm tracking-tight group-hover:text-manthan-maroon transition-colors">{value}</p>
+            </div>
+        </a>
+    );
+}
+
+function ContactField({ label, children, focused }: { label: string, children: React.ReactNode, focused: boolean }) {
+    return (
+        <div className={`p-4 rounded-xl border transition-all duration-300 ${focused ? 'bg-[#f4e4bc]/40 border-manthan-maroon shadow-[0_0_20px_rgba(139,0,0,0.1)]' : 'bg-[#f4e4bc]/10 border-[#3d2b1f]/10'}`}>
+            <label className={`block text-[10px] uppercase tracking-[0.2em] font-black mb-1 transition-colors duration-300 ${focused ? 'text-manthan-maroon' : 'text-[#3d2b1f]/60'}`}>{label}</label>
+            {children}
+        </div>
     );
 }

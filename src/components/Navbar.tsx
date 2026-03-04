@@ -4,15 +4,20 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Menu, X, ChevronRight, Sparkles } from 'lucide-react';
+import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
+import AnimatedButton from './AnimatedButton';
 
 const navLinks = [
     { href: '/', label: 'Home' },
     { href: '/events', label: 'Events' },
-    { href: '/workforce', label: 'Workforce' },
     { href: '/sponsorship', label: 'Sponsorship' },
     { href: '/about', label: 'About Us' },
     { href: '/contact', label: 'Contact' },
+];
+
+const dropdownLinks: { href: string; label: string }[] = [
+    { href: '/workforce', label: 'Workforce' },
 ];
 
 export default function Navbar() {
@@ -20,6 +25,7 @@ export default function Navbar() {
     const [scrolled, setScrolled] = useState(false);
     const [visible, setVisible] = useState(true);
     const [lastScrollY, setLastScrollY] = useState(0);
+    const activeLink = usePathname();
 
     useEffect(() => {
         const handleScroll = () => {
@@ -51,32 +57,26 @@ export default function Navbar() {
             }}
             transition={{ duration: 0.4, ease: "easeInOut" }}
             className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-500 ${scrolled
-                ? 'py-2 bg-manthan-black/98 backdrop-blur-3xl border-b border-manthan-gold/40 shadow-[0_8px_32px_rgba(0,0,0,0.9)]'
-                : 'py-4 bg-transparent'
+                ? 'bg-black/95 backdrop-blur-md py-4 shadow-2xl'
+                : 'bg-transparent py-5'
                 }`}
         >
             <div className="max-w-[1800px] mx-auto px-6 md:px-12 flex items-center justify-between">
-                {/* Logo Section - Elegant Ancient Indian Themed */}
-                <Link href="/" className="group flex items-center gap-4 relative z-[110]">
-                    <div className="relative">
-                        <div className="relative p-1 rounded-full border border-manthan-gold/30 bg-manthan-black/40 shadow-[0_0_15px_rgba(212,168,55,0.3)]">
-                            <Image
-                                src="/bbbg-removebg-preview.png"
-                                alt="College Logo"
-                                width={50}
-                                height={50}
-                                priority
-                                className={`transition-all duration-500 ${scrolled ? 'h-10 w-10' : 'h-12 w-12'} object-contain brightness-110 contrast-125`}
-                            />
-                        </div>
+                <Link href="/" className="flex items-center gap-4 group relative z-[110]">
+                    <div className="relative w-14 h-14 md:w-16 md:h-16 transition-transform duration-500">
+                        <Image
+                            src="/bbbg-removebg-preview.png"
+                            alt="Manthan Logo"
+                            fill
+                            className="object-contain drop-shadow-[0_0_15px_rgba(212,168,55,0.4)]"
+                        />
                     </div>
 
                     <div className="flex flex-col relative">
-                        <span className={`font-ancient font-black tracking-wider leading-none transition-all duration-500 ${scrolled ? 'text-2xl' : 'text-3xl md:text-4xl'
-                            } text-gold-gradient drop-shadow-[0_2px_8px_rgba(212,168,55,0.4)]`}>
-                            MANTHAN
+                        <span className={`font-pfeffer font-black tracking-[0.2em] leading-none transition-all duration-500 ${scrolled ? 'text-2xl md:text-3xl' : 'text-3xl md:text-5xl'
+                            } text-gold-gradient drop-shadow-[0_4px_12px_rgba(212,168,55,0.5)]`}>
+                            manthan
                         </span>
-                        <div className="h-[1px] bg-gradient-to-r from-manthan-gold via-manthan-crimson to-transparent mt-0.5" />
                     </div>
                 </Link>
 
@@ -86,27 +86,46 @@ export default function Navbar() {
                         <Link
                             key={link.href}
                             href={link.href}
-                            className="relative group py-1"
+                            className="relative py-2 group/link"
                         >
-                            <span className={`font-ancient ${scrolled ? 'text-xs' : 'text-sm'} uppercase tracking-[0.2em] font-bold text-gray-300 group-hover:text-manthan-gold transition-all duration-300`}>
+                            <span className={`font-pfeffer text-xl tracking-[0.15em] transition-all duration-300 ${activeLink === link.href ? 'text-manthan-gold' : 'text-gray-300 group-hover/link:text-white'
+                                }`}>
                                 {link.label}
                             </span>
-                            <span className="absolute -bottom-0.5 left-0 w-0 h-[1.5px] bg-manthan-gold transition-all duration-500 group-hover:w-full"></span>
+                            <span className="absolute -bottom-1 left-0 w-0 h-[1.5px] bg-manthan-gold transition-all duration-500 group-hover:w-full"></span>
                         </Link>
                     ))}
 
-                    {/* Stylish Register Button - Slimmer */}
-                    <Link
-                        href="/register"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="relative group px-6 py-2.5 overflow-hidden border border-manthan-gold/50 hover:border-manthan-gold transition-colors"
-                    >
-                        <span className="absolute inset-0 bg-gradient-to-tr from-manthan-maroon-dark to-manthan-crimson opacity-80 group-hover:opacity-100 transition-opacity"></span>
-                        <span className="relative flex items-center gap-2 font-ancient font-bold text-manthan-gold group-hover:text-white transition-colors uppercase tracking-[0.15em] text-xs">
-                            Register <Sparkles size={12} />
-                        </span>
-                    </Link>
+                    {/* More Dropdown */}
+                    <div className="relative group/more">
+                        <button className={`flex items-center gap-1 font-pfeffer text-2xl tracking-[0.15em] font-bold text-gray-300 group-hover/more:text-white transition-all duration-300 py-1`}>
+                            More <ChevronRight size={14} className="rotate-90 group-hover/more:rotate-[270deg] transition-transform duration-300" />
+                        </button>
+                        <div className="absolute top-full right-0 mt-2 w-48 bg-manthan-black/95 backdrop-blur-xl border border-manthan-gold/20 rounded-lg overflow-hidden opacity-0 invisible translate-y-2 group-hover/more:opacity-100 group-hover/more:visible group-hover/more:translate-y-0 transition-all duration-300 shadow-[0_10px_40px_rgba(0,0,0,0.5)]">
+                            {dropdownLinks.map((link) => (
+                                <Link
+                                    key={link.href}
+                                    href={link.href}
+                                    className="block px-6 py-4 text-lg font-pfeffer tracking-[0.15em] text-gray-300 hover:text-white hover:bg-manthan-gold/5 transition-colors border-b border-manthan-gold/5 last:border-0"
+                                >
+                                    {link.label}
+                                </Link>
+                            ))}
+                        </div>
+                    </div>
+
+                    <div className="pl-4">
+                        <Link
+                            href="/register"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-block transition-transform hover:scale-105 active:scale-95"
+                        >
+                            <AnimatedButton icon={Sparkles}>
+                                Register
+                            </AnimatedButton>
+                        </Link>
+                    </div>
                 </div>
 
                 {/* Mobile Menu Toggle */}
@@ -139,7 +158,7 @@ export default function Navbar() {
                         </div>
 
                         <div className="flex flex-col items-center space-y-10 relative z-10 w-full max-w-lg">
-                            {navLinks.map((link, index) => (
+                            {[...navLinks, ...dropdownLinks].map((link, index) => (
                                 <motion.div
                                     key={link.href}
                                     initial={{ opacity: 0, x: -50 }}
@@ -153,7 +172,8 @@ export default function Navbar() {
                                         className="flex items-center justify-between group w-full py-6 border-b border-manthan-gold/10"
                                     >
                                         <div className="flex flex-col">
-                                            <span className="font-heading text-4xl md:text-5xl uppercase tracking-tighter text-gray-500 group-hover:text-manthan-gold transition-all duration-500">
+                                            <span className={`font-pfeffer text-4xl md:text-5xl tracking-[0.15em] transition-all duration-500 ${activeLink === link.href ? 'text-manthan-gold' : 'text-gray-500 group-hover:text-manthan-gold'
+                                                }`}>
                                                 {link.label}
                                             </span>
                                             <span className="text-[10px] text-manthan-gold/30 uppercase tracking-[0.4em] mt-1 opacity-0 group-hover:opacity-100 transition-opacity">Explore Realm</span>
@@ -174,9 +194,14 @@ export default function Navbar() {
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     onClick={() => setIsOpen(false)}
-                                    className="block w-full text-center py-6 bg-gradient-to-r from-manthan-maroon to-manthan-crimson text-white font-heading font-black text-2xl uppercase tracking-[0.3em] rounded-sm transform hover:scale-105 transition-all shadow-2xl shadow-manthan-maroon/40 border border-manthan-gold/20"
+                                    className="w-full flex justify-center"
                                 >
-                                    JOIN THE LEGEND
+                                    <AnimatedButton
+                                        icon={Sparkles}
+                                        className="w-full py-6 text-2xl"
+                                    >
+                                        JOIN THE LEGEND
+                                    </AnimatedButton>
                                 </Link>
                             </motion.div>
                         </div>

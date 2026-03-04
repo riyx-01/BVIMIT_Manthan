@@ -58,7 +58,7 @@ export default function EventsFilter({ events }: { events: Event[] }) {
                                 <h2 className="font-ancient text-2xl uppercase tracking-[0.2em] text-[#3d2b1f] mb-8 border-b border-[#3d2b1f]/20 pb-4">
                                     Outdoor Sports
                                 </h2>
-                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 event-sub-container p-8">
                                     {outdoorSports.map((event) => (
                                         <EventCard key={event.id} event={event} />
                                     ))}
@@ -84,7 +84,7 @@ export default function EventsFilter({ events }: { events: Event[] }) {
                                 <h2 className="font-ancient text-2xl uppercase tracking-[0.2em] text-[#3d2b1f] mb-8 border-b border-[#3d2b1f]/20 pb-4">
                                     Indoor Sports
                                 </h2>
-                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 event-sub-container p-8">
                                     {indoorSports.map((event) => (
                                         <EventCard key={event.id} event={event} />
                                     ))}
@@ -110,7 +110,7 @@ export default function EventsFilter({ events }: { events: Event[] }) {
                                 <h2 className="font-ancient text-2xl uppercase tracking-[0.2em] text-[#3d2b1f] mb-8 border-b border-[#3d2b1f]/20 pb-4">
                                     More Sports Events
                                 </h2>
-                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 event-sub-container p-8">
                                     {otherSports.map((event) => (
                                         <EventCard key={event.id} event={event} />
                                     ))}
@@ -131,9 +131,14 @@ export default function EventsFilter({ events }: { events: Event[] }) {
                     <motion.div
                         variants={{ closed: { height: 0, opacity: 0 }, open: { height: 'auto', opacity: 1 } }}
                         transition={{ duration: 1, ease: "easeOut" }}
-                        className="parchment-body p-8 overflow-hidden"
+                        className="parchment-body p-8"
                     >
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {activeCategory !== 'all' && (
+                            <h2 className="font-ancient text-2xl uppercase tracking-[0.2em] text-[#3d2b1f] mb-8 border-b border-[#3d2b1f]/20 pb-4">
+                                {activeCategory} Events
+                            </h2>
+                        )}
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 event-sub-container p-6 rounded-2xl">
                             {filtered.map((event) => (
                                 <EventCard key={event.id} event={event} />
                             ))}

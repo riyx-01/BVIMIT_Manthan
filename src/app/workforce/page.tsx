@@ -8,27 +8,27 @@ import ScrollWrapper from '@/components/ScrollWrapper';
 
 const teamMembers = [
     {
-        name: 'Lead Developer',
-        role: 'Full Stack Architect',
-        image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=1974&auto=format&fit=crop',
+        name: 'Riya Thakur',
+        role: 'Lead Developer',
+        image: '/profile/riya-thakur.png',
         description: 'Master of the digital realm, weaving complex architectures with the finesse of an ancient scribe.'
     },
     {
-        name: 'UI/UX Designer',
-        role: 'Creative Visionary',
-        image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=1974&auto=format&fit=crop',
+        name: 'Ameya Bhagat',
+        role: 'UI/UX Designer',
+        image: '/profile/ameya-bhagat.png',
         description: 'Bringing the ancient aesthetics to the modern web through gold-leafed pixels and royal layouts.'
     },
     {
-        name: 'Frontend Expert',
-        role: 'Interface Magician',
+        name: 'Aryan Lehgaonkar',
+        role: 'Frontend Expert',
         image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=1974&auto=format&fit=crop',
         description: 'Crafting scrolls of code that breathe life into the static, creating interactive legends.'
     },
     {
-        name: 'Backend Specialist',
-        role: 'Data Alchemist',
-        image: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=1974&auto=format&fit=crop',
+        name: 'Uday Bhoi',
+        role: 'Backend Specialist',
+        image: '/profile/uday-bhoi.png',
         description: 'Transmuting raw data into gold through robust systems and secure digital vaults.'
     }
 ];
@@ -62,7 +62,7 @@ export default function WorkforcePage() {
                                 padding="p-0"
                                 className="group transition-all duration-500"
                             >
-                                <div className="aspect-[3/4] overflow-hidden relative">
+                                <div className="aspect-square overflow-hidden relative">
                                     <Image
                                         src={member.image}
                                         alt={member.name}

@@ -5,10 +5,11 @@ import Link from 'next/link';
 import Image from 'next/image';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-import { ArrowRight, Trophy, Music, BookOpen, Users, Sparkles } from 'lucide-react';
+import { ArrowRight, Sparkles } from 'lucide-react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { IntroContext } from '@/components/ClientLayout';
 import ScrollWrapper from '@/components/ScrollWrapper';
+import AnimatedButton from '@/components/AnimatedButton';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, Pagination, EffectCoverflow } from 'swiper/modules';
 import 'swiper/css';
@@ -19,23 +20,21 @@ export default function HomePage() {
     const { introComplete } = useContext(IntroContext);
     const { scrollYProgress } = useScroll();
 
-    // Parallax and scroll effects
     const heroContentOpacity = useTransform(scrollYProgress, [0, 0.3], [1, 0]);
-
-    // Section assets
     const parchmentEdge = "/torn_parchment_edge_horizontal_1772561356303.png";
+
+    const videoRef = useContext(IntroContext).introComplete ? null : null; // Temp placeholder for logic
 
     const events = [
         { title: "Prompt2Website", category: "Technical", description: "The Vibe Coding Challenge" },
-        { title: "TypeSprint", category: "Technical", description: "The Ultimate Typing Showdown" },
-        { title: "QuizStorm", category: "Technical", description: "Battle of Brains" },
         { title: "NrityaVerse", category: "Cultural", description: "Where tradition meets expression" },
+        { title: "Box Cricket", category: "Sports", description: "The urban cricket league" },
+        { title: "TypeSprint", category: "Technical", description: "The Ultimate Typing Showdown" },
         { title: "SurTarang", category: "Cultural", description: "Ride the waves of melody" },
         { title: "Badminton", category: "Sports", description: "Outdoor sports challenge" },
-        { title: "Box Cricket", category: "Sports", description: "The urban cricket league" },
-        { title: "Volleyball", category: "Sports", description: "Power, Speed, Teamwork" },
-        { title: "BGMI", category: "Sports", description: "The E-Sports Showdown" },
     ];
+
+    const bgVideoUrl = "https://k6iphva0ugo1rocg.public.blob.vercel-storage.com/extended%20.mp4";
 
     return (
         <motion.div
@@ -46,51 +45,117 @@ export default function HomePage() {
         >
             <Navbar />
 
+            {/* Background Video Layer */}
+            <div className="fixed inset-0 -z-10 w-full h-full">
+                <video
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
+                    className="w-full h-full object-cover opacity-40"
+                    poster="/video-poster.jpg"
+                    onLoadedData={(e) => {
+                        e.currentTarget.playbackRate = 0.5;
+                    }}
+                >
+                    <source src={bgVideoUrl} type="video/mp4" />
+                </video>
+                <div className="absolute inset-0 bg-black/40" />
+            </div>
+
             <main className="bg-transparent">
-                {/* 1. HERO SECTION - CLEAN & VIDEO FOCUSED */}
-                <section className="relative min-h-[90vh] flex items-center justify-center p-4 overflow-hidden pt-20">
-                    {/* Hero Content */}
+
+                {/* HERO SECTION */}
+                <section className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden pt-24">
+
+                    {/* HUGE CENTER LOGO */}
                     <motion.div
-                        style={{ opacity: heroContentOpacity }}
-                        className="relative z-10 text-center max-w-4xl mx-auto px-6"
+                        initial={{ scale: 0.8, opacity: 0 }}
+                        animate={{
+                            scale: 1,
+                            opacity: 1,
+                            y: [0, -20, 0]
+                        }}
+                        transition={{
+                            scale: { duration: 1, ease: "easeOut" },
+                            opacity: { duration: 1, ease: "easeOut" },
+                            y: { duration: 6, repeat: Infinity, ease: "easeInOut" }
+                        }}
+                        className="
+                                relative
+                                w-[75vw]
+                                h-[55vh]
+                                flex
+                                items-center
+                                justify-center
+                                mb-10
+                                "
                     >
-                        <motion.div
-                            initial={{ scale: 0.9, opacity: 0 }}
-                            animate={{ scale: 1, opacity: 1 }}
-                            transition={{ duration: 1.2 }}
-                            className="mb-2"
-                        >
-                            <Image
-                                src="/manthan_final_logo.png"
-                                alt="Manthan 2026"
-                                width={600}
-                                height={240}
-                                priority
-                                className="mx-auto gold-glow drop-shadow-[0_0_30px_rgba(212,168,55,0.3)]"
-                            />
-                        </motion.div>
-
-                        <h2 className="font-tagline text-4xl md:text-6xl text-gold-gradient tracking-widest uppercase mb-12">
-                            Roots to Realms
-                        </h2>
-
-                        <Link
-                            href="/events"
-                            className="group relative inline-flex px-10 py-4 bg-manthan-maroon border border-manthan-gold/40 font-ancient text-lg text-manthan-gold font-bold uppercase tracking-widest overflow-hidden transition-all hover:scale-105 active:scale-95"
-                        >
-                            <span className="relative z-10 flex items-center gap-3">
-                                Explore The Realms <ArrowRight />
-                            </span>
-                        </Link>
+                        <Image
+                            src="/profile/bg_26_manthan.png"
+                            alt="Manthan '26 Logo"
+                            fill
+                            priority
+                            className="
+            object-contain
+            scale-[1.35]
+            drop-shadow-[0_0_180px_rgba(212,175,55,0.65)]
+            "
+                        />
                     </motion.div>
 
-                    <div className="absolute bottom-0 left-0 w-full h-32 z-20 translate-y-2">
-                        <Image src={parchmentEdge} alt="" fill className="object-fill grayscale brightness-0 invert opacity-10" />
-                    </div>
+                    {/* TEXT CONTENT */}
+                    <motion.div
+                        style={{ opacity: heroContentOpacity }}
+                        className="relative z-10 text-center px-6"
+                    >
+
+                        {/* GOLD DIVIDER */}
+                        <div className="w-64 h-[2px] bg-gradient-to-r 
+            from-transparent 
+            via-[#d4af37] 
+            to-transparent 
+            mx-auto opacity-70"
+                        />
+
+                        {/* TAGLINE */}
+                        <motion.p
+                            initial={{ y: 10, opacity: 0 }}
+                            animate={{ y: 0, opacity: 1 }}
+                            transition={{ delay: 1.2, duration: 1 }}
+                            className="mt-6 font-ancient text-2xl md:text-3xl tracking-[0.35em] uppercase"
+                            style={{
+                                color: "#d4af37",
+                                textShadow: `
+                0px 2px 4px rgba(0,0,0,0.6),
+                0px -1px 1px rgba(255,255,255,0.7),
+                0px 0px 15px rgba(212,175,55,0.6)
+            `
+                            }}
+                        >
+                            Roots to Realm
+                        </motion.p>
+
+                        {/* BUTTON */}
+                        <motion.div
+                            initial={{ y: 20, opacity: 0 }}
+                            animate={{ y: 0, opacity: 1 }}
+                            transition={{ delay: 1.5, duration: 1 }}
+                            className="flex justify-center mt-10"
+                        >
+                            <Link href="/events" className="scale-110">
+                                <AnimatedButton icon={ArrowRight}>
+                                    Explore The Realms
+                                </AnimatedButton>
+                            </Link>
+                        </motion.div>
+
+                    </motion.div>
+
                 </section>
 
-                {/* 2. EVENT REALM CAROUSEL - Dynamic & Thematic */}
-                <section className="relative py-24 pb-40 px-6 overflow-hidden">
+                {/* EVENT CAROUSEL */}
+                <section className="relative py-24 pb-40 px-6 overflow-hidden bg-transparent">
                     <div className="max-w-[1400px] mx-auto relative z-10">
                         <div className="text-center mb-16">
                             <h3 className="font-ancient text-5xl md:text-7xl text-gold-gradient uppercase mb-4">The Arena</h3>
@@ -102,6 +167,8 @@ export default function HomePage() {
                             grabCursor={true}
                             centeredSlides={true}
                             slidesPerView={'auto'}
+                            observer={true}
+                            observeParents={true}
                             coverflowEffect={{
                                 rotate: 30,
                                 stretch: 0,
@@ -110,31 +177,26 @@ export default function HomePage() {
                                 slideShadows: false,
                             }}
                             autoplay={{
-                                delay: 3000,
+                                delay: 2500,
                                 disableOnInteraction: false,
                             }}
+                            speed={1000}
                             pagination={{ clickable: true }}
                             modules={[Autoplay, Pagination, EffectCoverflow]}
                             className="event-swiper !pb-20"
                         >
                             {events.map((event, idx) => (
-                                <SwiperSlide key={idx} className="!w-[300px] md:!w-[400px]">
-                                    <Link href={`/events?category=${event.category.toLowerCase()}`} className="block">
-                                        <ScrollWrapper padding="p-10" className="min-h-[450px]">
-                                            <div className="absolute top-4 left-4 w-6 h-6 border-t-2 border-l-2 border-[#b8860b]/40" />
-                                            <div className="absolute bottom-4 right-4 w-6 h-6 border-b-2 border-r-2 border-[#b8860b]/40" />
-
-                                            <div>
-                                                <span className="font-ancient text-xs tracking-[0.3em] uppercase text-manthan-maroon mb-2 block">{event.category}</span>
-                                                <h4 className="font-ancient text-3xl md:text-4xl text-[#3d2b1f] mb-6 leading-tight">{event.title}</h4>
-                                                <div className="h-[2px] w-12 bg-manthan-maroon mb-6" />
-                                                <p className="font-serif italic text-[#5c4033] text-lg leading-relaxed">
-                                                    {event.description}
-                                                </p>
-                                            </div>
-
-                                            <div className="mt-8 flex items-center gap-2 font-ancient font-bold text-manthan-maroon uppercase tracking-widest text-sm group-hover:gap-4 transition-all">
-                                                Explore {event.category} <Sparkles size={16} />
+                                <SwiperSlide key={idx} className="!w-[300px] md:!w-[420px]">
+                                    <Link href={`/events?category=${event.category.toLowerCase()}`} className="block h-full transform transition-transform duration-500 hover:scale-105 active:scale-95">
+                                        <ScrollWrapper padding="p-10" className="min-h-[480px]">
+                                            <span className="font-ancient text-sm tracking-[0.3em] uppercase text-manthan-maroon mb-4 block underline decoration-manthan-maroon/20 underline-offset-8">{event.category}</span>
+                                            <h4 className="font-ancient text-4xl text-[#3d2b1f] mb-6 leading-tight">{event.title}</h4>
+                                            <div className="h-[2px] w-16 bg-manthan-maroon mb-8" />
+                                            <p className="font-serif italic text-[#5c4033] text-xl leading-relaxed">
+                                                {event.description}
+                                            </p>
+                                            <div className="mt-10 flex items-center gap-3 font-ancient font-bold text-manthan-maroon uppercase tracking-widest text-base">
+                                                Unfold <Sparkles size={18} className="animate-pulse" />
                                             </div>
                                         </ScrollWrapper>
                                     </Link>
@@ -144,6 +206,7 @@ export default function HomePage() {
                     </div>
                 </section>
 
+                {/* CALL TO ACTION */}
                 <section className="py-24 bg-transparent">
                     <div className="max-w-4xl mx-auto text-center px-4">
                         <ScrollWrapper padding="p-12">
@@ -151,12 +214,13 @@ export default function HomePage() {
                             <p className="text-[#5c4033] mb-8 max-w-lg mx-auto italic">
                                 Unleash the spirit of the ancients. The realms of Manthan 2026 await your legend. Scribe your name in the chronicles of history.
                             </p>
-                            <Link
-                                href="/register"
-                                className="inline-flex px-12 py-4 bg-gradient-to-r from-manthan-maroon to-manthan-crimson text-white font-ancient font-bold uppercase tracking-[0.3em] shadow-xl shadow-manthan-maroon/20 hover:scale-105 transition-transform"
-                            >
-                                Register Inscriptions
-                            </Link>
+                            <div className="flex justify-center">
+                                <Link href="/register" className="scale-110">
+                                    <AnimatedButton icon={Sparkles}>
+                                        Register Inscriptions
+                                    </AnimatedButton>
+                                </Link>
+                            </div>
                         </ScrollWrapper>
                     </div>
                 </section>
@@ -166,4 +230,3 @@ export default function HomePage() {
         </motion.div>
     );
 }
-

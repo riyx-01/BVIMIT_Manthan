@@ -4,7 +4,7 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import ScrollWrapper from '@/components/ScrollWrapper';
 import { motion } from 'framer-motion';
-import { History, Target, Users, Sparkles, Trophy, Rocket } from 'lucide-react';
+import { History, Target, Sparkles, Trophy, Rocket } from 'lucide-react';
 
 export default function AboutPage() {
     return (
@@ -37,9 +37,8 @@ export default function AboutPage() {
                                 <History className="text-manthan-maroon" size={24} />
                             </div>
                             <h2 className="font-ancient text-2xl font-bold text-[#3d2b1f] mb-4 uppercase">Our Legacy</h2>
-                            <p className="text-[#5c4033] text-sm leading-relaxed mb-4 italic">
-                                Established in 2023, Manthan was born out of a desire to create a multidisciplinary platform
-                                that celebrates both technical prowess and cultural richness.
+                            <p className="text-[#5c4033] text-sm leading-relaxed mb-4">
+                                Over the years, MANTHAN has evolved into one of Navi Mumbai’s prominent intercollegiate festivals, reflecting the dedication and collaborative spirit of BVIMIT’s faculty and students. The fest has consistently attracted participation from colleges across Thane District and Navi Mumbai, witnessing large-scale engagement, including over 700 participants in 2024. Editions such as MANTHAN 2022, 2024, and 2025 have successfully featured a wide array of events, including IT and gaming competitions, academic contests, sports tournaments, and cultural showcases judged by distinguished guests and industry experts. The seamless organization, active involvement of faculty coordinators, generous support from sponsors, and the presence of eminent chief guests have contributed to its continued success. Each year, MANTHAN leaves a lasting impact by promoting academic excellence, creativity, sportsmanship, and leadership, thereby strengthening its reputation as a flagship fest of the institute.
                             </p>
                         </ScrollWrapper>
 
@@ -48,9 +47,8 @@ export default function AboutPage() {
                                 <Target className="text-manthan-maroon" size={24} />
                             </div>
                             <h2 className="font-ancient text-2xl font-bold text-[#3d2b1f] mb-4 uppercase">The Vision</h2>
-                            <p className="text-[#5c4033] text-sm leading-relaxed mb-4 italic">
-                                Our theme "Roots to Realms" encapsulates our philosophy: staying grounded in our fundamental
-                                knowledge while reaching for the infinite realms of future.
+                            <p className="text-[#5c4033] text-sm leading-relaxed mb-4">
+                                Bharati Vidyapeeth Institute of Management and Information Technology (BVIMIT), Navi Mumbai, envisions *MANTHAN* as a dynamic intercollegiate platform that nurtures innovation, creativity, leadership, and collaborative learning among students. Inspired by the concept of *Samudra Manthan*, symbolizing the churning of ideas to bring forth excellence, the fest aims to provide an academically and culturally enriching environment. Through a diverse blend of IT competitions, academic challenges, indoor and outdoor sports, and cultural performances, MANTHAN encourages students to explore their talents, exchange knowledge, and develop teamwork and organizational skills. The institute remains committed to fostering originality and individuality by offering equal opportunities to all participants and motivating them to think innovatively and implement their ideas through this vibrant collegiate festival.
                             </p>
                         </ScrollWrapper>
                     </div>
